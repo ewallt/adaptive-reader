@@ -149,36 +149,36 @@
                     "name": "Gregory A. Boyd",
                     "display_name": "Boyd",
                     "introduction": "Gregory A. Boyd is a noted pastor, theologian, and scholar. His influential body of work includes his magnum opus, <em>The Crucifixion of the Warrior God</em>, and its more accessible abridged version, <em>Cross Vision</em>. Boyd is recognized within evangelical circles.",
-                    "sections": {
-                        "background_and_thesis": {
-                            "title": "Boyd's Background & Thesis",
+                    "paragraphs": [
+                        {
+                            "heading": "Boyd's Background & Thesis",
                             "content": "Gregory A. Boyd is an esteemed pastor, theologian, and scholar whose works, including <em>The Crucifixion of the Warrior God</em> and <em>Cross Vision</em>, are significant within evangelical circles. His fundamental theological argument centers on the conviction that <strong>God is fundamentally non-violent</strong>. This core belief shapes his entire theological framework, especially his <strong>cruciform hermeneutic</strong>, which asserts that all Scripture must be understood and interpreted through the lens of Jesus Christ and His work on the Cross."
                         },
-                        "cruciform_hermeneutic": {
-                            "title": "Cruciform Hermeneutic",
+                        {
+                            "heading": "Cruciform Hermeneutic",
                             "content": "Boyd champions a <strong>cruciform hermeneutic</strong>, also referred to as \"crucivision,\" which means that everything in Scripture, particularly the Old Testament, must be interpreted in light of the revelation of Jesus Christ and His work on the Cross. This methodology posits Jesus' life, death, and character as the ultimate interpretive key for understanding God's nature throughout the entire Bible. The practical meaning of this approach is to provide a consistent vision of God's character, helping to reconcile seemingly contradictory biblical portrayals and offering a helpful framework for life, theology, and ministry."
                         },
-                        "understanding_ot_violence": {
-                            "title": "Understanding Old Testament Violence",
+                        {
+                            "heading": "Understanding Old Testament Violence",
                             "content": "To address the violent passages in the Hebrew Bible, Boyd's cruciform hermeneutic suggests that while \"something else is going on\" in these texts, it is not that God is actively inflicting violence. Instead, Boyd's concept of divine accommodation implies that God is \"taking upon Himself the violence of the whole world\". This perspective argues that violence originates from humanity, not from God, and that human perspectives and fallen conditions are reflected in some biblical narratives. A specific example used by Boyd to illustrate this is the <strong>Canaanite conquests in the book of Joshua</strong>, where he suggests that the extreme violence, such as the killing of an infant by Hebrew soldiers who believed they were commanded by Yahweh, should be understood as God bearing human violence rather than inflicting it."
                         },
-                        "cross_centered_atonement": {
-                            "title": "Cross-Centered Atonement",
+                        {
+                            "heading": "Cross-Centered Atonement",
                             "content": "For Boyd, the Cross is the ultimate revelation of God's true character, demonstrating divine non-violence. He explicitly rejects traditional atonement theories, such as satisfaction or penal substitution, that suggest God the Father needed or demanded Jesus' death as a blood sacrifice to appease divine anger or satisfy retributive justice. Instead, Boyd asserts that humanity was responsible for putting Jesus to death on the cross, motivated by the \"age-old crime of scapegoating an innocent victim\". Jesus willingly submitted to this human violence to both expose and neutralize it. The Cross, in Boyd's view, unmasked the <strong>scapegoat mechanism</strong> and revealed the violence inherent in the human heart. It laid bare \"the lie that violence toward an innocent victim helps alleviate the curse of sin\". Thus, the crucifixion represents Jesus' victory through non-violent means over the powers and principalities, overturning the \"religion of scapegoating and sacrifice\"."
                         },
-                        "theodicy_problem": {
-                            "title": "Theodicy Problem",
+                        {
+                            "heading": "Theodicy Problem",
                             "content": "Boyd directly addresses the inherent tension between a non-violent God and the presence of violence and suffering in the world, particularly as depicted in some Old Testament narratives. His solution to this problem involves the concept of <strong>divine withdrawal</strong>. He proposes that in these violent instances, including Jesus' cry from the cross, God is \"withdrawing Himself\" from the people and nations experiencing or inflicting violence. This allows Boyd to explain how violence occurs without attributing it to God's direct will or nature, emphasizing that God is not actively inflicting but rather allowing or bearing suffering in these contexts. He acknowledges that some may find the idea of God withdrawing uncomfortable, yet he presents it as a consistent element in his cruciform understanding of God's steadfast non-violence."
                         },
-                        "theological_anthropology": {
-                            "title": "Theological Anthropology",
+                        {
+                            "heading": "Theological Anthropology",
                             "content": "Boyd's theology implicitly defines human nature as prone to violence and sin, primarily through the scapegoat mechanism, which drives humans to blame others for societal problems or personal sins. Jesus' crucifixion serves to reveal this \"violence inherent within the heart of men\". Consequently, Boyd's emphasis on God's non-violent character calls believers to reflect this nature in their own lives. A key aspect of this theological anthropology is the imperative for Christians to embody God's non-violent character through <strong>enemy-love</strong>. This means actively rejecting violence and instead practicing compassion and forgiveness, even towards adversaries."
                         },
-                        "practical_applications": {
-                            "title": "Practical Applications",
+                        {
+                            "heading": "Practical Applications",
                             "content": "Boyd's non-violence theology has profound implications for Christian living and the church's role in the world. It encourages believers to act peaceably and non-violently, consistently embodying Jesus' instructions on enemy-love. This translates into a commitment to non-violent resistance against systems and powers that perpetuate violence and injustice. Drawing inspiration from figures like Walter Wink, Boyd's framework suggests a practical, three-part approach to engaging societal challenges: 1) naming the Powers by courageously exposing abuses of power; 2) unmasking the Powers by revealing their social, economic, psychological, and spiritual dynamics of oppression; and 3) engaging the Powers by wrestling with them not to destroy, but to call them back to their higher, God-given vocation. This theological perspective has informed practical activism, such as Scottish land reform and opposing the Isle of Harris superquarry, where spiritual insights animated concrete actions. It has also influenced discussions on nonviolence within professional contexts, including lectures to senior military officers."
                         }
-                    }
+                    ]
                 }
             }
         };
@@ -222,11 +222,14 @@
             html += `<h2 class="text-2xl md:text-3xl font-bold mb-4">${author.name}</h2>`;
             html += `<p class="text-base mb-6 leading-relaxed">${author.introduction}</p>`;
             
-            // Author sections
-            for (const sectionKey in author.sections) {
-                const section = author.sections[sectionKey];
-                html += `<h3 class="text-xl md:text-2xl font-semibold mt-6 mb-3">${section.title}</h3>`;
-                html += `<p class="text-base mb-4 leading-relaxed">${section.content}</p>`;
+            // Generic loop through paragraphs - HTML doesn't know about content structure
+            if (author.paragraphs && author.paragraphs.length > 0) {
+                author.paragraphs.forEach(paragraph => {
+                    if (paragraph.heading) {
+                        html += `<h3 class="text-xl md:text-2xl font-semibold mt-6 mb-3">${paragraph.heading}</h3>`;
+                    }
+                    html += `<p class="text-base mb-4 leading-relaxed">${paragraph.content}</p>`;
+                });
             }
             
             contentContainer.innerHTML = html;
