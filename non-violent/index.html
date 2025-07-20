@@ -141,10 +141,10 @@
     </div>
 
     <script>
-        const theologyData = {
+        const data = {
             "title": "Non-Violent Theology: Contemporary Christian Perspectives",
             "description": "An exploration of contemporary theologians who advocate for non-violent interpretations of Christianity, the cross, and biblical texts.",
-            "authors": {
+            "categories": {
                 "boyd": {
                     "name": "Gregory A. Boyd",
                     "display_name": "Boyd",
@@ -183,21 +183,21 @@
             }
         };
 
-        let currentAuthor = 'boyd'; // Default to Boyd
+        let currentCategory = 'boyd'; // Default to Boyd
         const contentContainer = document.getElementById('content-container');
 
         /**
-         * Builds the author navigation
+         * Builds the category navigation
          */
-        function buildAuthorNav() {
-            const authors = theologyData.authors;
+        function buildCategoryNav() {
+            const categories = data.categories;
             let navHtml = '<div class="author-nav">';
-            navHtml += '<h3 class="text-lg font-semibold mb-3">Select Theologian:</h3>';
+            navHtml += '<h3 class="text-lg font-semibold mb-3">Select Category:</h3>';
             
-            for (const authorKey in authors) {
-                const author = authors[authorKey];
-                const isActive = authorKey === currentAuthor ? 'active' : '';
-                navHtml += `<button class="author-btn ${isActive}" data-author="${authorKey}">${author.display_name}</button>`;
+            for (const categoryKey in categories) {
+                const category = categories[categoryKey];
+                const isActive = categoryKey === currentCategory ? 'active' : '';
+                navHtml += `<button class="author-btn ${isActive}" data-category="${categoryKey}">${category.display_name}</button>`;
             }
             
             navHtml += '</div>';
@@ -205,26 +205,26 @@
         }
 
         /**
-         * Renders the complete content for the current author
+         * Renders the complete content for the current category
          */
         function renderContent() {
-            const author = theologyData.authors[currentAuthor];
+            const category = data.categories[currentCategory];
             let html = '';
             
             // Main title
-            html += `<h1 class="text-3xl md:text-4xl font-bold mb-4">${theologyData.title}</h1>`;
-            html += `<p class="text-lg mb-6 leading-relaxed">${theologyData.description}</p>`;
+            html += `<h1 class="text-3xl md:text-4xl font-bold mb-4">${data.title}</h1>`;
+            html += `<p class="text-lg mb-6 leading-relaxed">${data.description}</p>`;
             
-            // Author navigation
-            html += buildAuthorNav();
+            // Category navigation
+            html += buildCategoryNav();
             
-            // Author name and introduction
-            html += `<h2 class="text-2xl md:text-3xl font-bold mb-4">${author.name}</h2>`;
-            html += `<p class="text-base mb-6 leading-relaxed">${author.introduction}</p>`;
+            // Category name and introduction
+            html += `<h2 class="text-2xl md:text-3xl font-bold mb-4">${category.name}</h2>`;
+            html += `<p class="text-base mb-6 leading-relaxed">${category.introduction}</p>`;
             
             // Generic loop through paragraphs - HTML doesn't know about content structure
-            if (author.paragraphs && author.paragraphs.length > 0) {
-                author.paragraphs.forEach(paragraph => {
+            if (category.paragraphs && category.paragraphs.length > 0) {
+                category.paragraphs.forEach(paragraph => {
                     if (paragraph.heading) {
                         html += `<h3 class="text-xl md:text-2xl font-semibold mt-6 mb-3">${paragraph.heading}</h3>`;
                     }
@@ -234,12 +234,12 @@
             
             contentContainer.innerHTML = html;
             
-            // Add event listeners to author buttons
+            // Add event listeners to category buttons
             document.querySelectorAll('.author-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    const selectedAuthor = e.target.dataset.author;
-                    if (selectedAuthor !== currentAuthor) {
-                        currentAuthor = selectedAuthor;
+                    const selectedCategory = e.target.dataset.category;
+                    if (selectedCategory !== currentCategory) {
+                        currentCategory = selectedCategory;
                         renderContent();
                     }
                 });
