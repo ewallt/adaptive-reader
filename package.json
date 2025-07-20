@@ -1,0 +1,12 @@
+{
+  "name": "adaptive-reader",
+  "version": "1.0.0",
+  "description": "A monorepo for creating beautiful, theme-switchable readers for academic content",
+  "keywords": ["reader", "academic", "theology", "responsive", "themes"],
+  "author": "ewallt",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ewallt/adaptive-reader.git"
+  }
+}
