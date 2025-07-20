@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Non-Violent Theology Reader</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <style>
+        /* Custom font families for the themes */
+        .font-newspaper { font-family: 'Lora', serif; }
+        .font-dark-theme { font-family: 'Source Sans 3', sans-serif; }
+
+        /* Base styles */
+        body {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Light theme (Newspaper) styles */
+        .newspaper-theme {
+            background-color: #fdfdfd;
+            color: #1a1a1a;
+        }
+        .newspaper-theme h1, .newspaper-theme h2, .newspaper-theme h3 {
+            font-weight: 700;
+        }
+        .newspaper-theme h1 {
+            border-bottom: 2px solid #1a1a1a;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .newspaper-theme h2 {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 0.25rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .newspaper-theme strong {
+            font-weight: 600;
+        }
+        .newspaper-theme .content-wrapper {
+            max-width: 800px;
+        }
+        .newspaper-theme .author-nav button {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            color: #495057;
+        }
+        .newspaper-theme .author-nav button:hover {
+            background-color: #e9ecef;
+        }
+        .newspaper-theme .author-nav button.active {
+            background-color: #1a1a1a;
+            color: #fdfdfd;
+        }
+
+        /* Dark theme styles */
+        .dark-theme {
+            background-color: #2d2d30;
+            color: #cccccc;
+        }
+        .dark-theme h1, .dark-theme h2, .dark-theme h3 {
+            color: #ffffff;
+        }
+        .dark-theme h1 {
+            border-bottom-color: #3c3c3c;
+        }
+        .dark-theme h2 {
+            border-bottom-color: #3c3c3c;
+        }
+        .dark-theme .content-wrapper {
+            max-width: 900px;
+        }
+        .dark-theme .card {
+            background-color: #3c3c3c;
+            border-color: #4a4a4a;
+        }
+        .dark-theme ul {
+            list-style-type: disc;
+            list-style-position: inside;
+        }
+        .dark-theme li::marker {
+            color: #888888;
+        }
+        .dark-theme .author-nav button {
+            background-color: #3c3c3c;
+            border: 1px solid #4a4a4a;
+            color: #cccccc;
+        }
+        .dark-theme .author-nav button:hover {
+            background-color: #4a4a4a;
+        }
+        .dark-theme .author-nav button.active {
+            background-color: #ffffff;
+            color: #2d2d30;
+        }
+
+        /* Shared styles */
+        .content-wrapper {
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        @media (min-width: 768px) {
+            .content-wrapper {
+                padding: 4rem 2rem;
+            }
+        }
+        .author-nav {
+            margin-bottom: 2rem;
+        }
+        .author-nav button {
+            padding: 0.5rem 1rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="font-newspaper newspaper-theme">
+
+    <!-- Theme Switcher Button -->
+    <div class="fixed top-4 right-4 z-50">
+        <button id="theme-switcher" class="p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors duration-300">
+            <!-- Sun Icon for Light Mode -->
+            <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M12 12a5 5 0 100-10 5 5 0 000 10z" />
+            </svg>
+            <!-- Moon Icon for Dark Mode -->
+            <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+        </button>
+    </div>
+
+    <div id="content-container" class="content-wrapper">
+        <!-- Content will be dynamically injected here -->
+    </div>
+
+    <script>
+        const theologyData = {
+            "title": "Non-Violent Theology: Contemporary Christian Perspectives",
+            "description": "An exploration of contemporary theologians who advocate for non-violent interpretations of Christianity, the cross, and biblical texts.",
+            "authors": {
+                "boyd": {
+                    "name": "Gregory A. Boyd",
+                    "display_name": "Boyd",
+                    "introduction": "Gregory A. Boyd is a noted pastor, theologian, and scholar. His influential body of work includes his magnum opus, <em>The Crucifixion of the Warrior God</em>, and its more accessible abridged version, <em>Cross Vision</em>. Boyd is recognized within evangelical circles.",
+                    "sections": {
+                        "background_and_thesis": {
+                            "title": "Boyd's Background & Thesis",
+                            "content": "Gregory A. Boyd is an esteemed pastor, theologian, and scholar whose works, including <em>The Crucifixion of the Warrior God</em> and <em>Cross Vision</em>, are significant within evangelical circles. His fundamental theological argument centers on the conviction that <strong>God is fundamentally non-violent</strong>. This core belief shapes his entire theological framework, especially his <strong>cruciform hermeneutic</strong>, which asserts that all Scripture must be understood and interpreted through the lens of Jesus Christ and His work on the Cross."
+                        },
+                        "cruciform_hermeneutic": {
+                            "title": "Cruciform Hermeneutic",
+                            "content": "Boyd champions a <strong>cruciform hermeneutic</strong>, also referred to as \"crucivision,\" which means that everything in Scripture, particularly the Old Testament, must be interpreted in light of the revelation of Jesus Christ and His work on the Cross. This methodology posits Jesus' life, death, and character as the ultimate interpretive key for understanding God's nature throughout the entire Bible. The practical meaning of this approach is to provide a consistent vision of God's character, helping to reconcile seemingly contradictory biblical portrayals and offering a helpful framework for life, theology, and ministry."
+                        },
+                        "understanding_ot_violence": {
+                            "title": "Understanding Old Testament Violence",
+                            "content": "To address the violent passages in the Hebrew Bible, Boyd's cruciform hermeneutic suggests that while \"something else is going on\" in these texts, it is not that God is actively inflicting violence. Instead, Boyd's concept of divine accommodation implies that God is \"taking upon Himself the violence of the whole world\". This perspective argues that violence originates from humanity, not from God, and that human perspectives and fallen conditions are reflected in some biblical narratives. A specific example used by Boyd to illustrate this is the <strong>Canaanite conquests in the book of Joshua</strong>, where he suggests that the extreme violence, such as the killing of an infant by Hebrew soldiers who believed they were commanded by Yahweh, should be understood as God bearing human violence rather than inflicting it."
+                        },
+                        "cross_centered_atonement": {
+                            "title": "Cross-Centered Atonement",
+                            "content": "For Boyd, the Cross is the ultimate revelation of God's true character, demonstrating divine non-violence. He explicitly rejects traditional atonement theories, such as satisfaction or penal substitution, that suggest God the Father needed or demanded Jesus' death as a blood sacrifice to appease divine anger or satisfy retributive justice. Instead, Boyd asserts that humanity was responsible for putting Jesus to death on the cross, motivated by the \"age-old crime of scapegoating an innocent victim\". Jesus willingly submitted to this human violence to both expose and neutralize it. The Cross, in Boyd's view, unmasked the <strong>scapegoat mechanism</strong> and revealed the violence inherent in the human heart. It laid bare \"the lie that violence toward an innocent victim helps alleviate the curse of sin\". Thus, the crucifixion represents Jesus' victory through non-violent means over the powers and principalities, overturning the \"religion of scapegoating and sacrifice\"."
+                        },
+                        "theodicy_problem": {
+                            "title": "Theodicy Problem",
+                            "content": "Boyd directly addresses the inherent tension between a non-violent God and the presence of violence and suffering in the world, particularly as depicted in some Old Testament narratives. His solution to this problem involves the concept of <strong>divine withdrawal</strong>. He proposes that in these violent instances, including Jesus' cry from the cross, God is \"withdrawing Himself\" from the people and nations experiencing or inflicting violence. This allows Boyd to explain how violence occurs without attributing it to God's direct will or nature, emphasizing that God is not actively inflicting but rather allowing or bearing suffering in these contexts. He acknowledges that some may find the idea of God withdrawing uncomfortable, yet he presents it as a consistent element in his cruciform understanding of God's steadfast non-violence."
+                        },
+                        "theological_anthropology": {
+                            "title": "Theological Anthropology",
+                            "content": "Boyd's theology implicitly defines human nature as prone to violence and sin, primarily through the scapegoat mechanism, which drives humans to blame others for societal problems or personal sins. Jesus' crucifixion serves to reveal this \"violence inherent within the heart of men\". Consequently, Boyd's emphasis on God's non-violent character calls believers to reflect this nature in their own lives. A key aspect of this theological anthropology is the imperative for Christians to embody God's non-violent character through <strong>enemy-love</strong>. This means actively rejecting violence and instead practicing compassion and forgiveness, even towards adversaries."
+                        },
+                        "practical_applications": {
+                            "title": "Practical Applications",
+                            "content": "Boyd's non-violence theology has profound implications for Christian living and the church's role in the world. It encourages believers to act peaceably and non-violently, consistently embodying Jesus' instructions on enemy-love. This translates into a commitment to non-violent resistance against systems and powers that perpetuate violence and injustice. Drawing inspiration from figures like Walter Wink, Boyd's framework suggests a practical, three-part approach to engaging societal challenges: 1) naming the Powers by courageously exposing abuses of power; 2) unmasking the Powers by revealing their social, economic, psychological, and spiritual dynamics of oppression; and 3) engaging the Powers by wrestling with them not to destroy, but to call them back to their higher, God-given vocation. This theological perspective has informed practical activism, such as Scottish land reform and opposing the Isle of Harris superquarry, where spiritual insights animated concrete actions. It has also influenced discussions on nonviolence within professional contexts, including lectures to senior military officers."
+                        }
+                    }
+                }
+            }
+        };
+
+        let currentAuthor = 'boyd'; // Default to Boyd
+        const contentContainer = document.getElementById('content-container');
+
+        /**
+         * Builds the author navigation
+         */
+        function buildAuthorNav() {
+            const authors = theologyData.authors;
+            let navHtml = '<div class="author-nav">';
+            navHtml += '<h3 class="text-lg font-semibold mb-3">Select Theologian:</h3>';
+            
+            for (const authorKey in authors) {
+                const author = authors[authorKey];
+                const isActive = authorKey === currentAuthor ? 'active' : '';
+                navHtml += `<button class="author-btn ${isActive}" data-author="${authorKey}">${author.display_name}</button>`;
+            }
+            
+            navHtml += '</div>';
+            return navHtml;
+        }
+
+        /**
+         * Renders the complete content for the current author
+         */
+        function renderContent() {
+            const author = theologyData.authors[currentAuthor];
+            let html = '';
+            
+            // Main title
+            html += `<h1 class="text-3xl md:text-4xl font-bold mb-4">${theologyData.title}</h1>`;
+            html += `<p class="text-lg mb-6 leading-relaxed">${theologyData.description}</p>`;
+            
+            // Author navigation
+            html += buildAuthorNav();
+            
+            // Author name and introduction
+            html += `<h2 class="text-2xl md:text-3xl font-bold mb-4">${author.name}</h2>`;
+            html += `<p class="text-base mb-6 leading-relaxed">${author.introduction}</p>`;
+            
+            // Author sections
+            for (const sectionKey in author.sections) {
+                const section = author.sections[sectionKey];
+                html += `<h3 class="text-xl md:text-2xl font-semibold mt-6 mb-3">${section.title}</h3>`;
+                html += `<p class="text-base mb-4 leading-relaxed">${section.content}</p>`;
+            }
+            
+            contentContainer.innerHTML = html;
+            
+            // Add event listeners to author buttons
+            document.querySelectorAll('.author-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const selectedAuthor = e.target.dataset.author;
+                    if (selectedAuthor !== currentAuthor) {
+                        currentAuthor = selectedAuthor;
+                        renderContent();
+                    }
+                });
+            });
+        }
+
+        // Initial content render
+        renderContent();
+
+        // --- Theme Switcher Logic ---
+        const themeSwitcher = document.getElementById('theme-switcher');
+        const sunIcon = document.getElementById('sun-icon');
+        const moonIcon = document.getElementById('moon-icon');
+        const body = document.body;
+
+        function applyTheme(theme) {
+            if (theme === 'dark') {
+                body.classList.remove('newspaper-theme', 'font-newspaper');
+                body.classList.add('dark-theme', 'font-dark-theme');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+                themeSwitcher.style.color = '#cccccc';
+            } else {
+                body.classList.remove('dark-theme', 'font-dark-theme');
+                body.classList.add('newspaper-theme', 'font-newspaper');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+                themeSwitcher.style.color = '#1a1a1a';
+            }
+        }
+
+        themeSwitcher.addEventListener('click', () => {
+            const currentTheme = localStorage.getItem('nonviolent-theology-theme') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            localStorage.setItem('nonviolent-theology-theme', newTheme);
+            applyTheme(newTheme);
+        });
+
+        // On page load, apply the saved theme or default to light
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('nonviolent-theology-theme') || 'light';
+            applyTheme(savedTheme);
+        });
+
+    </script>
+</body>
+</html>
