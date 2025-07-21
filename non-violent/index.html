@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adaptive Reader</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script>
+      /* keep dark-mode utilities working */
+      tailwind.config = { darkMode: 'class' };
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
@@ -23,25 +27,8 @@
             background-color: #fdfdfd;
             color: #1a1a1a;
         }
-        .newspaper-theme h1, .newspaper-theme h2, .newspaper-theme h3 {
-            font-weight: 700;
-        }
-        .newspaper-theme h1 {
-            border-bottom: 2px solid #1a1a1a;
-            padding-bottom: 0.5rem;
-            margin-bottom: 1rem;
-        }
-        .newspaper-theme h2 {
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 0.25rem;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-        }
         .newspaper-theme strong {
             font-weight: 600;
-        }
-        .newspaper-theme .content-wrapper {
-            max-width: 800px;
         }
         .newspaper-theme .author-nav button {
             background-color: #f8f9fa;
@@ -60,18 +47,6 @@
         .dark-theme {
             background-color: #2d2d30;
             color: #ffffff;
-        }
-        .dark-theme h1, .dark-theme h2, .dark-theme h3 {
-            color: #ffffff;
-        }
-        .dark-theme h1 {
-            border-bottom-color: #3c3c3c;
-        }
-        .dark-theme h2 {
-            border-bottom-color: #3c3c3c;
-        }
-        .dark-theme .content-wrapper {
-            max-width: 900px;
         }
         .dark-theme .card {
             background-color: #3c3c3c;
@@ -98,15 +73,6 @@
         }
 
         /* Shared styles */
-        .content-wrapper {
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
-        @media (min-width: 768px) {
-            .content-wrapper {
-                padding: 4rem 2rem;
-            }
-        }
         .author-nav {
             margin-bottom: 2rem;
         }
@@ -136,9 +102,8 @@
         </button>
     </div>
 
-    <div id="content-container" class="content-wrapper">
-        <!-- Content will be dynamically injected here -->
-    </div>
+    <article id="content-container"
+             class="prose dark:prose-invert mx-auto max-w-prose p-8"></article>
 
     <script>
         const data = {
@@ -410,7 +375,7 @@
         function buildCategoryNav() {
             const categories = data.categories;
             let navHtml = '<div class="author-nav">';
-            navHtml += '<h3 class="text-lg font-semibold mb-3">Select Category:</h3>';
+            navHtml += '<h3>Select Category:</h3>';
             
             for (const categoryKey in categories) {
                 const category = categories[categoryKey];
@@ -430,23 +395,23 @@
             let html = '';
             
             // Main title
-            html += `<h1 class="text-3xl md:text-4xl font-bold mb-4">${data.title}</h1>`;
-            html += `<p class="text-lg mb-6 leading-relaxed">${data.description}</p>`;
+            html += `<h1>${data.title}</h1>`;
+            html += `<p>${data.description}</p>`;
             
             // Category navigation
             html += buildCategoryNav();
             
             // Category name and introduction
-            html += `<h2 class="text-2xl md:text-3xl font-bold mb-4">${category.name}</h2>`;
-            html += `<p class="text-base mb-6 leading-relaxed">${category.introduction}</p>`;
+            html += `<h2>${category.name}</h2>`;
+            html += `<p>${category.introduction}</p>`;
             
             // Generic loop through paragraphs - HTML doesn't know about content structure
             if (category.paragraphs && category.paragraphs.length > 0) {
                 category.paragraphs.forEach(paragraph => {
                     if (paragraph.heading) {
-                        html += `<h3 class="text-xl md:text-2xl font-semibold mt-6 mb-3">${paragraph.heading}</h3>`;
+                        html += `<h3>${paragraph.heading}</h3>`;
                     }
-                    html += `<p class="text-base mb-4 leading-relaxed">${paragraph.content}</p>`;
+                    html += `<p>${paragraph.content}</p>`;
                 });
             }
             
@@ -478,12 +443,14 @@
 
         function applyTheme(theme) {
             if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
                 body.classList.remove('newspaper-theme', 'font-newspaper');
                 body.classList.add('dark-theme', 'font-dark-theme');
                 sunIcon.classList.add('hidden');
                 moonIcon.classList.remove('hidden');
                 themeSwitcher.style.color = '#cccccc';
             } else {
+                document.documentElement.classList.remove('dark');
                 body.classList.remove('dark-theme', 'font-dark-theme');
                 body.classList.add('newspaper-theme', 'font-newspaper');
                 sunIcon.classList.remove('hidden');
