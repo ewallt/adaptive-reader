@@ -1,48 +1,50 @@
 # Adaptive Reader
 
-Adaptive Reader is a small collection of static HTML readers. Each reader folder contains an
-`index.html` file that can be opened directly in your browser. The pages include a simple
-light/dark theme switcher and store your theme preference in `localStorage`.
-
-## Readers
-
-- [N.T. Wright Theology](./n-t-wright/) - Summary of "The Day the Revolution Began"
-- [Non-Violent Theology](./non-violent/) - Overview of contemporary non-violent Christian thought
+A single-page application for presenting in-depth articles. It uses a simple Node.js build process to create self-contained versions for different topics from structured JSON files.
 
 ## Features
 
+- **Data-Driven:** All content is managed in simple, structured JSON files.
+- **Topic Switching:** A build script allows you to easily generate a version of the app for any topic.
+- **Clean UI:** A clean, readable interface styled with Tailwind CSS Typography.
+- **Themeable:** Includes a light/dark theme switcher with persistent preference in `localStorage`.
+- **Zero Dependencies:** The final output is a static `index.html` with no external framework dependencies.
 
+## Quick Start (Development)
 
-- Multiple content readers in one repository
+To build and view a specific topic:
 
-- Light/dark theme switching
+1.  **Clone the repository** and navigate to the root directory.
 
-- Responsive design
+2.  **Build the app:** Choose a topic from the `/content` folder (e.g., `godel_theorems.json`) and run the build script. The script copies the chosen JSON into the `/public/data` directory.
 
-- Typography-focused design
+    **For Windows (PowerShell):**
+    ```powershell
+    $env:APP_CONFIG_ID="godel_theorems"; node build.js
+    ```
+    **For macOS/Linux:**
+    ```bash
+    APP_CONFIG_ID=godel_theorems node build.js
+    ```
 
-- Persistent theme preferences
+3.  **Serve the app:** Navigate to the output directory and start a local web server.
+    ```powershell
+    cd public
+    python -m http.server
+    ```
 
+4.  **View in your browser:** Open `http://localhost:8000`.
 
+## Creating New Content Modules
 
-## Quick Start
+1.  **Create a new JSON file** in the `/content` directory (e.g., `my_new_topic.json`), following the established data structure.
 
-
-
-1. Clone the repository
-
-2. Navigate to a reader folder (for example `n-t-wright` or `non-violent`)
-
-3. Open `index.html` in your browser
-
-
-
-## Creating New Readers
-
-There is no dedicated template yet. You can create a new reader by copying an existing reader folder and modifying its `index.html`.
+2.  **Build the application** with your new topic by setting the `APP_CONFIG_ID` to your new filename (without the `.json` extension):
+    ```powershell
+    $env:APP_CONFIG_ID="my_new_topic"; node build.js
+    ```
+3.  **Serve the `public` directory** as described above to see your new version.
 
 ## Contributing
-
-
 
 Contributions are welcome! Feel free to open an issue or submit a pull request.
