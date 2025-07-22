@@ -115,6 +115,7 @@
     "name": "J.D. Myers",
     "display_name": "Myers",
     "introduction": "Jeremy Myers is an American pastor, author, and blogger, known for his works such as <em>The Atonement of God</em> and <em>Nothing but the Blood of Jesus</em>.",
+    "breakAfter": true,
     "paragraphs": [
         {
             "heading": "Myers' Background & Thesis",
