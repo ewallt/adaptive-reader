@@ -357,6 +357,7 @@
   "name": "Karl Barth",
   "display_name": "Barth",
   "introduction": "Karl Barth (1886-1968) was a Swiss Reformed theologian whose understanding of reconciliation through the cross is profoundly rooted in God's self-revelation of truth about divine love and grace, rather than a primary emphasis on legal transaction or the satisfaction of divine wrath. For Barth, all knowledge of God is obtainable only through Christ, making his theology 'avowedly Christo-centric'.",
+  "breakAfter": true,
   "paragraphs": [
     {
       "heading": "Truth Revelation vs. Legal Transaction",
