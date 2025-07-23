@@ -14,10 +14,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
     <style>
         .font-newspaper { font-family: 'Lora', serif; }
-        .font-dark-theme { font-family: 'Lora', serif; } 
+        .font-dark-theme { font-family: 'Source Sans 3', sans-serif; }
         body { transition: background-color 0.3s ease, color 0.3s ease; }
         
-        /* RULE TO PREVENT LAYOUT SHIFT */
         .prose h1 {
             min-height: 7.5rem; 
         }
@@ -46,8 +45,7 @@
             align-items: center;
             width: 100%;
         }
-
-        /* BUG FIX V2: Robust flexbox line break */
+        
         .flex-break {
             flex-basis: 100%;
             height: 0;
@@ -68,6 +66,7 @@
     <script>
         // State variables
         let libraryData = null; // Will hold all topics
+        let sortedTopicIds = null; // Will hold topic keys in sorted order
         let currentTopicId = null; // e.g., 'godel-theorems'
         let currentArticleId = null; // e.g., 'godel-hilbert-dream'
         const appContainer = document.getElementById('app-container');
@@ -80,17 +79,24 @@
 
             const topicData = libraryData[currentTopicId];
             if (!topicData) return;
+            
+            // Get sorted article keys
+            const sortedArticleKeys = Object.keys(topicData.categories).sort((a, b) => {
+                const orderA = topicData.categories[a].display_order || 0;
+                const orderB = topicData.categories[b].display_order || 0;
+                return orderA - orderB;
+            });
 
-            // Set the default article if one isn't selected
+            // Set the default article if one isn't selected or valid
             if (!currentArticleId || !topicData.categories[currentArticleId]) {
-                currentArticleId = Object.keys(topicData.categories)[0];
+                currentArticleId = sortedArticleKeys[0];
             }
             const articleData = topicData.categories[currentArticleId];
 
             // Build HTML
             let html = `<h1>${topicData.title}</h1>`;
             html += buildTopicSwitcher();
-            html += buildNav(topicData.categories);
+            html += buildNav(topicData.categories, sortedArticleKeys);
             
             html += `<h2>${articleData.name}</h2>`;
             html += `<p>${articleData.introduction}</p>`;
@@ -111,33 +117,29 @@
         function buildTopicSwitcher() {
             let html = '<div class="nav-container">';
             html += '<select id="topic-switcher" class="nav-button">';
-            for (const topicId in libraryData) {
+            sortedTopicIds.forEach(topicId => {
                 const topic = libraryData[topicId];
                 const isSelected = topicId === currentTopicId ? 'selected' : '';
                 html += `<option value="${topicId}" ${isSelected}>${topic.title}</option>`;
-            }
+            });
             html += '</select></div>';
             return html;
         }
 
-        /**
-         * BUG FIX V2: Updated buildNav function
-         */
-        function buildNav(categories) {
+        function buildNav(categories, sortedKeys) {
             let navHtml = '<div class="nav-container">';
             navHtml += '<h3>Select Article:</h3>';
             navHtml += '<div class="nav-buttons-wrapper">'; 
-            for (const articleKey in categories) {
+            sortedKeys.forEach(articleKey => {
                 const article = categories[articleKey];
                 const isActive = articleKey === currentArticleId ? 'active' : '';
                 navHtml += `<button class="nav-button article-btn ${isActive}" data-article-id="${articleKey}">${article.display_name}</button>`;
                 
-                // Replace <br> with the new div
                 if (article.breakAfter) {
                     navHtml += '<div class="flex-break"></div>';
                 }
-            }
-            navHtml += '</div>'; // Close the new wrapper
+            });
+            navHtml += '</div>';
             navHtml += '</div>';
             return navHtml;
         }
@@ -162,13 +164,21 @@
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 
                 libraryData = await response.json();
-                currentTopicId = Object.keys(libraryData)[0]; // Default to the first topic
+
+                // Sort topic IDs based on display_order
+                sortedTopicIds = Object.keys(libraryData).sort((a, b) => {
+                    const orderA = libraryData[a].display_order || 0;
+                    const orderB = libraryData[b].display_order || 0;
+                    return orderA - orderB;
+                });
+                
+                currentTopicId = sortedTopicIds[0]; // Default to the first sorted topic
                 
                 renderApp();
 
             } catch (error) {
                 console.error('Failed to load content:', error);
-                appContainer.innerHTML = `<h1>Error</h1><p>Could not load content from <code>/data/content.json</code>.</p>`;
+                appContainer.innerHTML = `<h1>Error</h1><p>Could not load content from _data/content.json_.</p>`;
             }
         }
 
