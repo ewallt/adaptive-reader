@@ -16,10 +16,8 @@
         .font-newspaper { font-family: 'Lora', serif; }
         .font-dark-theme { font-family: 'Lora', serif; }
         body { transition: background-color 0.3s ease, color 0.3s ease; }
-        
-        .prose h1 {
-            min-height: 7.5rem; 
-        }
+
+        .prose h1 { min-height: 7.5rem; }
 
         /* Light theme (Newspaper) styles */
         .newspaper-theme { background-color: #fdfdfd; color: #1a1a1a; }
@@ -37,25 +35,15 @@
         /* Shared styles */
         .nav-container { margin-bottom: 2rem; }
         .nav-button { padding: 0.5rem 1rem; margin-right: 0.5rem; margin-bottom: 0.5rem; border-radius: 0.375rem; transition: all 0.2s ease; cursor: pointer; }
-        #topic-switcher { padding: 0.5rem; border-radius: 0.375rem; margin-bottom: 1rem; width: 100%; }
-        
-        .nav-buttons-wrapper {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            width: 100%;
-        }
-        
-        .flex-break {
-            flex-basis: 100%;
-            height: 0;
-        }
+        #library-switcher, #topic-switcher { padding: 0.5rem; border-radius: 0.375rem; margin-bottom: 1rem; width: 100%; }
+        .nav-buttons-wrapper { display: flex; flex-wrap: wrap; align-items: center; width: 100%; }
+        .flex-break { flex-basis: 100%; height: 0; }
     </style>
 </head>
 <body class="font-newspaper newspaper-theme">
 
     <div class="fixed top-4 right-4 z-50">
-        <button id="theme-switcher-btn" class="p-2 rounded-full">
+        <button id="theme-switcher-btn" class="p-2 rounded-full" aria-label="Toggle theme">
             <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M12 12a5 5 0 100-10 5 5 0 000 10z" /></svg>
             <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
         </button>
@@ -64,54 +52,103 @@
     <main id="app-container" class="prose dark:prose-invert mx-auto max-w-prose p-8"></main>
 
     <script>
-        // State variables
-        let libraryData = null; // Will hold all topics
-        let sortedTopicIds = null; // Will hold topic keys in sorted order
-        let currentTopicId = null; // e.g., 'godel-theorems'
-        let currentArticleId = null; // e.g., 'godel-hilbert-dream'
+        // -------------------- State --------------------
+        // Master (multi-library) + current library
+        let masterLibrary = null;       // { [libraryId]: { [topicId]: Topic } } OR null
+        let sortedLibraryIds = null;    // array of library ids when super file is detected
+        let currentLibraryId = null;    // selected library id
+
+        // Per-library topic/article
+        let libraryData = null;         // { [topicId]: Topic }
+        let sortedTopicIds = null;      // ordered topic ids
+        let currentTopicId = null;      // e.g., 'godel-theorems'
+        let currentArticleId = null;    // e.g., 'godel-hilbert-dream'
+
         const appContainer = document.getElementById('app-container');
 
-        /**
-         * Renders the entire page based on the current state
-         */
+        // -------------------- Rendering --------------------
         function renderApp() {
-            if (!libraryData || !currentTopicId) return;
+            if (!libraryData) return;
+
+            // Ensure topics are sorted and currentTopicId is valid
+            sortedTopicIds = Object.keys(libraryData).sort((a, b) => {
+                const orderA = libraryData[a]?.display_order || 0;
+                const orderB = libraryData[b]?.display_order || 0;
+                return orderA - orderB;
+            });
+            if (!sortedTopicIds.length) {
+                appContainer.innerHTML = `<h1>Empty Library</h1><p>No topics found.</p>`;
+                return;
+            }
+            if (!currentTopicId || !libraryData[currentTopicId]) {
+                currentTopicId = sortedTopicIds[0];
+            }
 
             const topicData = libraryData[currentTopicId];
             if (!topicData) return;
-            
-            // Get sorted article keys
-            const sortedArticleKeys = Object.keys(topicData.categories).sort((a, b) => {
-                const orderA = topicData.categories[a].display_order || 0;
-                const orderB = topicData.categories[b].display_order || 0;
+
+            // Sort articles and validate currentArticleId
+            const sortedArticleKeys = Object.keys(topicData.categories || {}).sort((a, b) => {
+                const orderA = topicData.categories[a]?.display_order || 0;
+                const orderB = topicData.categories[b]?.display_order || 0;
                 return orderA - orderB;
             });
-
-            // Set the default article if one isn't selected or valid
+            if (!sortedArticleKeys.length) {
+                let html = '';
+                html += buildLibrarySwitcher(); // rendered only if multiple libraries
+                html += `<h1>${topicData.title || ''}</h1>`;
+                html += buildTopicSwitcher();
+                html += `<p>No articles in this topic.</p>`;
+                appContainer.innerHTML = html;
+                document.title = topicData.title || 'Adaptive Reader';
+                return;
+            }
             if (!currentArticleId || !topicData.categories[currentArticleId]) {
                 currentArticleId = sortedArticleKeys[0];
             }
             const articleData = topicData.categories[currentArticleId];
 
-            // Build HTML
-            let html = `<h1>${topicData.title}</h1>`;
+            // Build HTML (preserve original order: H1, then dropdowns/nav)
+            let html = '';
+            html += buildLibrarySwitcher(); // shows only when super file is present
+            html += `<h1>${topicData.title}</h1>`;
             html += buildTopicSwitcher();
             html += buildNav(topicData.categories, sortedArticleKeys);
-            
-            html += `<h2>${articleData.name}</h2>`;
-            html += `<p>${articleData.introduction}</p>`;
-            
-            articleData.paragraphs.forEach(p => {
+
+            html += `<h2>${articleData.name || articleData.display_name || ''}</h2>`;
+            if (articleData.introduction) {
+                html += `<p>${articleData.introduction}</p>`;
+            }
+            (articleData.paragraphs || []).forEach(p => {
                 html += `<h3>${p.heading}</h3>`;
                 html += `<p>${p.content}</p>`;
             });
 
             appContainer.innerHTML = html;
-            document.title = topicData.title;
+            document.title = topicData.title || 'Adaptive Reader';
 
-            // Re-add event listeners
-            document.getElementById('topic-switcher').addEventListener('change', handleTopicChange);
-            document.querySelectorAll('.article-btn').forEach(btn => btn.addEventListener('click', handleArticleChange));
+            // Re-bind events
+            const libSel = document.getElementById('library-switcher');
+            if (libSel) libSel.addEventListener('change', handleLibraryChange);
+            const topicSel = document.getElementById('topic-switcher');
+            if (topicSel) topicSel.addEventListener('change', handleTopicChange);
+            document.querySelectorAll('.article-btn').forEach(btn =>
+                btn.addEventListener('click', handleArticleChange)
+            );
+        }
+
+        // Library dropdown appears ONLY when the super file is detected
+        function buildLibrarySwitcher() {
+            if (!sortedLibraryIds || sortedLibraryIds.length < 2) return '';
+            let html = '<div class="nav-container">';
+            html += '<select id="library-switcher" class="nav-button">';
+            sortedLibraryIds.forEach(id => {
+                const label = id.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                const sel = (id === currentLibraryId) ? 'selected' : '';
+                html += `<option value="${id}" ${sel}>${label}</option>`;
+            });
+            html += '</select></div>';
+            return html;
         }
 
         function buildTopicSwitcher() {
@@ -129,24 +166,31 @@
         function buildNav(categories, sortedKeys) {
             let navHtml = '<div class="nav-container">';
             navHtml += '<h3>Select Article:</h3>';
-            navHtml += '<div class="nav-buttons-wrapper">'; 
+            navHtml += '<div class="nav-buttons-wrapper">';
             sortedKeys.forEach(articleKey => {
                 const article = categories[articleKey];
                 const isActive = articleKey === currentArticleId ? 'active' : '';
                 navHtml += `<button class="nav-button article-btn ${isActive}" data-article-id="${articleKey}">${article.display_name}</button>`;
-                
-                if (article.breakAfter) {
-                    navHtml += '<div class="flex-break"></div>';
-                }
+                if (article.breakAfter) navHtml += '<div class="flex-break"></div>';
             });
-            navHtml += '</div>';
-            navHtml += '</div>';
+            navHtml += '</div></div>';
             return navHtml;
+        }
+
+        // -------------------- Handlers --------------------
+        function handleLibraryChange(e) {
+            currentLibraryId = e.target.value;
+            localStorage.setItem('readerLibraryId', currentLibraryId);
+            // Swap current library data and reset selections
+            libraryData = masterLibrary[currentLibraryId];
+            currentTopicId = null;
+            currentArticleId = null;
+            renderApp();
         }
 
         function handleTopicChange(e) {
             currentTopicId = e.target.value;
-            currentArticleId = null; // Reset article selection
+            currentArticleId = null;
             renderApp();
         }
 
@@ -155,30 +199,63 @@
             renderApp();
         }
 
-        /**
-         * Fetches data and initializes the application
-         */
+        // -------------------- Init / Data load --------------------
+        function looksLikeTopicObject(obj) {
+            // Heuristic: Reader topics have at least title or categories
+            return obj && typeof obj === 'object' && (('categories' in obj) || ('title' in obj));
+        }
+
         async function initializeApp() {
             try {
                 const response = await fetch('./data/content.json');
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                
-                libraryData = await response.json();
+                const raw = await response.json();
 
-                // Sort topic IDs based on display_order
-                sortedTopicIds = Object.keys(libraryData).sort((a, b) => {
-                    const orderA = libraryData[a].display_order || 0;
-                    const orderB = libraryData[b].display_order || 0;
-                    return orderA - orderB;
-                });
-                
-                currentTopicId = sortedTopicIds[0]; // Default to the first sorted topic
-                
+                // Detect shape:
+                //  - Single-library file: top-level values are Topic objects.
+                //  - Super file: top-level values are libraries whose values are Topic objects.
+                const topKeys = Object.keys(raw);
+                if (topKeys.length === 0) throw new Error('content.json is empty.');
+
+                const firstVal = raw[topKeys[0]];
+                const singleLibrary = looksLikeTopicObject(firstVal);
+
+                if (singleLibrary) {
+                    // Back-compat mode (exactly like your current app)
+                    masterLibrary = null;
+                    sortedLibraryIds = null;
+                    currentLibraryId = null;
+
+                    libraryData = raw; // topics map
+                    sortedTopicIds = Object.keys(libraryData).sort((a, b) => {
+                        const orderA = libraryData[a]?.display_order || 0;
+                        const orderB = libraryData[b]?.display_order || 0;
+                        return orderA - orderB;
+                    });
+                    currentTopicId = sortedTopicIds[0];
+                    currentArticleId = null;
+                } else {
+                    // Super-file mode (multiple libraries)
+                    masterLibrary = raw; // { [libraryId]: topicsMap }
+                    sortedLibraryIds = Object.keys(masterLibrary).sort(); // alphabetical; adjust if you add per-library order
+                    const savedLib = localStorage.getItem('readerLibraryId');
+                    currentLibraryId = (savedLib && masterLibrary[savedLib]) ? savedLib : sortedLibraryIds[0];
+
+                    libraryData = masterLibrary[currentLibraryId];
+                    sortedTopicIds = Object.keys(libraryData).sort((a, b) => {
+                        const orderA = libraryData[a]?.display_order || 0;
+                        const orderB = libraryData[b]?.display_order || 0;
+                        return orderA - orderB;
+                    });
+                    currentTopicId = sortedTopicIds[0];
+                    currentArticleId = null;
+                }
+
                 renderApp();
 
             } catch (error) {
                 console.error('Failed to load content:', error);
-                appContainer.innerHTML = `<h1>Error</h1><p>Could not load content from _data/content.json_.</p>`;
+                appContainer.innerHTML = `<h1>Error</h1><p>Could not load content from <code>./data/content.json</code>.</p>`;
             }
         }
 
@@ -199,14 +276,13 @@
             localStorage.setItem('theme', newTheme);
             applyTheme(newTheme);
         });
-        
+
         // --- Initial Load ---
         document.addEventListener('DOMContentLoaded', () => {
             const savedTheme = localStorage.getItem('theme') || 'light';
             applyTheme(savedTheme);
             initializeApp();
         });
-
     </script>
 </body>
 </html>
