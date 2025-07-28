@@ -1,0 +1,141 @@
+{
+  "title": "Integration & Automation Tools: A Multi-Part Guide",
+  "description": "Teaching articles for connecting services, automating workflows, testing APIs, scheduling data jobs, and rapidly building internal tools. This guide corresponds to Step 3: Other Integration & Automation Tools.",
+  "categories": {
+    "tool_no_code_flows": {
+      "name": "No-Code Workflow Automation",
+      "display_name": "No-Code Flows",
+      "introduction": "Connect apps and trigger actions without code using Zapier, IFTTT, and n8n. Ideal for gluing APIs, webhooks, and notifications together (for example, verse-of-the-day emails).",
+      "paragraphs": [
+        {
+          "heading": "Overview of No-Code Flows",
+          "content": "No-code platforms orchestrate triggers and actions across services. Common triggers include new form submission, RSS item, or webhook; actions include sending email, posting to Slack, or writing to a sheet/DB."
+        },
+        {
+          "heading": "Getting Started",
+          "content": "Create an account in Zapier or IFTTT, or self-host n8n. Authorize connections to target apps (OAuth), then pick a trigger app and an action app to build your first automation."
+        },
+        {
+          "heading": "Basic Usage Patterns",
+          "content": "Examples: new RSS item to email digest; received webhook to Google Sheet row; daily schedule to fetch API data and post a summary to Slack."
+        },
+        {
+          "heading": "Advanced Features",
+          "content": "Use filters and branching, multi-step workflows, delays, data transformers, and webhooks to receive external events. In n8n, combine nodes for custom logic and error handling."
+        },
+        {
+          "heading": "Best Practices and Tips",
+          "content": "Name workflows descriptively, standardize field mappings, add error notifications, and rate-limit or batch actions to avoid throttling. Keep credentials in secure vaults and document each flow."
+        }
+      ]
+    },
+    "tool_serverless_functions": {
+      "name": "Serverless & Functions",
+      "display_name": "Serverless Functions",
+      "introduction": "Host lightweight API wrappers or bots on AWS Lambda, Google Cloud Functions, or Azure Functions. Pay per execution and scale automatically.",
+      "paragraphs": [
+        {
+          "heading": "What Serverless Functions Do",
+          "content": "Functions run small pieces of code in response to events such as HTTP requests, queue messages, file uploads, or schedules. Common uses include wrapping third-party APIs, data cleanup, and chat/webhook handlers."
+        },
+        {
+          "heading": "Setup and Deployment",
+          "content": "Create a function in your chosen cloud console or CLI, select a runtime (Node, Python, etc.), define an HTTP trigger or scheduler, and set environment variables for API keys."
+        },
+        {
+          "heading": "Basic Usage Patterns",
+          "content": "Expose a simple HTTP endpoint that validates input, calls an external API, and returns normalized JSON. Or run a cron-like scheduled job to pull data and push to storage."
+        },
+        {
+          "heading": "Advanced Configuration",
+          "content": "Tune memory/timeout, configure concurrency, add layers or shared packages, secure with IAM or function keys, and use queues or pub/sub to decouple slow tasks."
+        },
+        {
+          "heading": "Best Practices and Tips",
+          "content": "Keep functions single-purpose, log inputs/outputs with correlation IDs, handle retries idempotently, and monitor with built-in metrics and alerts."
+        }
+      ]
+    },
+    "tool_api_testing_mocking": {
+      "name": "API Testing & Mocking",
+      "display_name": "API Testing",
+      "introduction": "Use Postman and Mockoon to explore endpoints, create test suites, and simulate APIs for front-end development without a live backend.",
+      "paragraphs": [
+        {
+          "heading": "Introduction to Testing & Mocks",
+          "content": "Testing tools send requests, validate responses, and generate documentation; mocking tools serve predictable responses for faster iteration and sandboxed development."
+        },
+        {
+          "heading": "Installation and Setup",
+          "content": "Install Postman and create a workspace. Import OpenAPI/Swagger definitions, define environments for dev/stage/prod, and store secrets in environment variables. Install Mockoon to spin up local mock servers."
+        },
+        {
+          "heading": "Basic Testing Workflow",
+          "content": "Create requests (GET, POST) with headers and bodies, add assertions for status code and schema, group them into collections, and run them manually or in a collection runner."
+        },
+        {
+          "heading": "Mocking APIs",
+          "content": "Define routes in Mockoon with static or templated JSON. Point your app to the mock base URL to develop UI and data flows before the real API is ready."
+        },
+        {
+          "heading": "Best Practices and Tips",
+          "content": "Version collections in source control, generate docs from tests, integrate with CI to run on every commit, and keep mock data representative and anonymized."
+        }
+      ]
+    },
+    "tool_data_pipelines_etl": {
+      "name": "Data Pipelines & ETL",
+      "display_name": "ETL Pipelines",
+      "introduction": "Schedule, orchestrate, and monitor data ingestion and transformation with Apache Airflow, Prefect, or Talend.",
+      "paragraphs": [
+        {
+          "heading": "What Pipelines Provide",
+          "content": "Pipelines automate extract-transform-load steps, ensure dependencies run in order, and provide observability for long-running data jobs."
+        },
+        {
+          "heading": "Getting Started",
+          "content": "Install Airflow or Prefect, start the scheduler and UI, and define your first DAG or flow in Python with tasks for extraction, transform, and load."
+        },
+        {
+          "heading": "Basic Pipeline Structure",
+          "content": "Represent tasks as nodes in a directed acyclic graph with explicit dependencies. Parameterize date ranges and environment-specific settings."
+        },
+        {
+          "heading": "Advanced Features",
+          "content": "Use sensors to wait for files or events, map tasks over dynamic inputs, share data via XCom or results, and configure retries and SLAs with alerts."
+        },
+        {
+          "heading": "Best Practices and Tips",
+          "content": "Containerize tasks for reproducibility, separate orchestration from business logic, track lineage and metadata, and keep runs idempotent."
+        }
+      ]
+    },
+    "tool_low_code_builders": {
+      "name": "Low-Code App Builders",
+      "display_name": "Low-Code Builders",
+      "introduction": "Quickly assemble internal dashboards and admin panels on top of your APIs using Retool or Appsmith.",
+      "paragraphs": [
+        {
+          "heading": "Overview of Low-Code Builders",
+          "content": "These platforms provide drag-and-drop UI components, query editors, and state management to bind front-ends directly to APIs and databases."
+        },
+        {
+          "heading": "Getting Started",
+          "content": "Create an account, connect a data source (REST, GraphQL, SQL), and add table, form, and chart components to a new page."
+        },
+        {
+          "heading": "Basic App Structure",
+          "content": "Bind components to queries, pass selected row values into forms, and handle submit events to call create/update/delete endpoints."
+        },
+        {
+          "heading": "Advanced Customization",
+          "content": "Add custom JavaScript for conditional logic, use role-based access controls, theme the UI, and package multi-page apps with reusable modules."
+        },
+        {
+          "heading": "Best Practices and Tips",
+          "content": "Secure secrets via environment variables, validate inputs on the client, paginate large datasets, and log server responses for troubleshooting."
+        }
+      ]
+    }
+  }
+}

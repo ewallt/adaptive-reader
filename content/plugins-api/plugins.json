@@ -1,0 +1,168 @@
+{
+  "title": "Essential ChatGPT Plugins: A Multi-Part Guide",
+  "description": "A series of teaching articles that walk you through installing, configuring, and mastering key ChatGPT plugins for scripture lookup, research, and data enrichment.",
+  "categories": {
+    "plugin_esv_api": {
+      "name": "ESV API Plugin",
+      "display_name": "ESV Plugin",
+      "introduction": "Learn how to integrate the ESV API plugin into your ChatGPT workflow to fetch, display, and reference English Standard Version scripture with ease.",
+      "paragraphs": [
+        {
+          "heading": "Overview of the ESV API Plugin",
+          "content": "The ESV API plugin connects ChatGPT to the English Standard Version of the Bible via a RESTful interface. It allows you to request passages by book, chapter, and verse, retrieve parallel translations, and access cross-references programmatically."
+        },
+        {
+          "heading": "Installation and Activation",
+          "content": "To enable the ESV plugin, navigate to the ChatGPT Plugins store, search for \"ESV API\", and click \"Install\". After installation, grant the plugin permission to use your API key, which you can obtain from the ESV developer portal."
+        },
+        {
+          "heading": "Basic Usage Patterns",
+          "content": "Invoke the plugin by typing a command like \"@ESV get John 3:16\". ChatGPT will return the verse text and, if requested, footnotes or commentary. You can also ask for multiple verses or entire chapters."
+        },
+        {
+          "heading": "Advanced Configuration Options",
+          "content": "Customize the plugin behavior by specifying translation variants or requesting additional fields such as Strong's numbers or original-language parsing. These parameters can be appended to your command."
+        },
+        {
+          "heading": "Best Practices and Tips",
+          "content": "Cache frequently used passages to minimize API calls and latency. Combine the ESV plugin with browser or BibleGateway plugins for comparative study. Use concise prompts, and validate passage boundaries to avoid truncated results."
+        }
+      ]
+    },
+    "plugin_biblegateway": {
+      "name": "BibleGateway Plugin",
+      "display_name": "BibleGateway",
+      "introduction": "Discover how to leverage the BibleGateway plugin to search multiple translations, read commentaries, and embed scripture in your ChatGPT sessions.",
+      "paragraphs": [
+        {
+          "heading": "What the BibleGateway Plugin Offers",
+          "content": "The BibleGateway plugin taps into the vast library of translations and commentaries on BibleGateway.com. It supports keyword searches, parallel translations, and access to devotional content."
+        },
+        {
+          "heading": "Setup and Permissions",
+          "content": "Install the plugin from the ChatGPT plugin directory, then authorize it with your BibleGateway account credentials. Ensure you enable both read and search scopes to access full features."
+        },
+        {
+          "heading": "Performing Scripture Searches",
+          "content": "Use commands like \"@BibleGateway find 'faith' in Romans 4\" to retrieve all occurrences of 'faith' in that chapter, along with snippets and links to full context. You can filter by translation or commentary."
+        },
+        {
+          "heading": "Retrieving Commentaries and Devotionals",
+          "content": "Append parameters such as \"?commentary=MatthewHenry\" or \"?devotional=OurDailyBread\" to your query. This will pull in expert insights and daily reflections alongside the scripture text."
+        },
+        {
+          "heading": "Optimizing Response Formatting",
+          "content": "Use markdown flags (\"--md\") to format verses as blockquotes or tables. Combine BibleGateway data with other plugins for deeper studies, and standardize your query syntax for consistency."
+        }
+      ]
+    },
+    "plugin_openbible": {
+      "name": "OpenBible Plugin",
+      "display_name": "OpenBible",
+      "introduction": "Master the OpenBible plugin to perform thematic searches, locate cross-references, and explore topical guides programmatically within ChatGPT.",
+      "paragraphs": [
+        {
+          "heading": "Plugin Capabilities at a Glance",
+          "content": "OpenBible focuses on thematic indexing, allowing you to search by topic and retrieve relevant passages, related thematic threads, and links to external resources."
+        },
+        {
+          "heading": "Enabling the Plugin",
+          "content": "Locate \"OpenBible\" in the plugin store, install it, and link your user token. Configure default topics and regions for maps if desired."
+        },
+        {
+          "heading": "Executing Topic-Based Queries",
+          "content": "Commands like \"@OpenBible topic 'forgiveness'\" will return a curated list of verses and resources. You can refine results by date or book."
+        },
+        {
+          "heading": "Integrating Cross-References",
+          "content": "Use \"?xref=true\" to include cross-reference chains under each verse. This helps you trace thematic development throughout scripture."
+        },
+        {
+          "heading": "Leveraging Map and Timeline Features",
+          "content": "Activate optional parameters like \"?maps=on\" or \"?timeline=Matthew\" to visualize geographic and chronological dimensions alongside textual results."
+        }
+      ]
+    },
+    "plugin_wolframalpha": {
+      "name": "Wolfram Alpha Plugin",
+      "display_name": "WolframAlpha",
+      "introduction": "Learn to use the Wolfram Alpha plugin for calculations, data analysis, and factual queries directly from your ChatGPT interface.",
+      "paragraphs": [
+        {
+          "heading": "Introduction to WolframAlpha Integration",
+          "content": "The Wolfram Alpha plugin turns ChatGPT into a computational engine, handling everything from simple arithmetic to advanced data modeling and statistical queries."
+        },
+        {
+          "heading": "Activating the Plugin",
+          "content": "Install \"WolframAlpha\" from the plugin marketplace, then enter your API key from Wolfram's developer portal. Test connectivity with a sample query."
+        },
+        {
+          "heading": "Basic Query Syntax",
+          "content": "Prefix questions with \"@WolframAlpha: plot sin(x) from 0 to 2π\" or \"@WolframAlpha: population of Denver\". The plugin returns charts, tables, and step-by-step solutions."
+        },
+        {
+          "heading": "Advanced Data Analysis",
+          "content": "Request regression models (\"?model=linear\"), statistical summaries (\"?stats=all\"), or unit conversions (\"?units=imperial\"). You can also fetch curated datasets by topic."
+        },
+        {
+          "heading": "Tips for Accurate Results",
+          "content": "Use precise mathematical notation in your prompts, clarify variable definitions, and double-check regional settings to avoid misinterpretation."
+        }
+      ]
+    },
+    "plugin_scholarai": {
+      "name": "ScholarAI Plugin",
+      "display_name": "ScholarAI",
+      "introduction": "Explore how to harness ScholarAI for academic paper discovery, summaries, and citation generation right inside ChatGPT.",
+      "paragraphs": [
+        {
+          "heading": "What ScholarAI Brings to Your Research",
+          "content": "ScholarAI connects to academic databases, letting you search for peer-reviewed papers, generate abstracts, and build bibliographies instantly."
+        },
+        {
+          "heading": "Plugin Installation Steps",
+          "content": "Find \"ScholarAI\" in the ChatGPT Plugins list, install it, and link your institutional or personal API credentials. Set preferred fields."
+        },
+        {
+          "heading": "Performing Literature Searches",
+          "content": "Issue commands like \"@ScholarAI search 'atonement theories' since 2015\". You will receive ranked results, abstracts, and links to full texts where available."
+        },
+        {
+          "heading": "Generating Summaries and Citations",
+          "content": "Ask for \"?summary=200 words\" or \"?cite=APA\" to get concise abstracts and properly formatted citations for each paper."
+        },
+        {
+          "heading": "Best Practices in Academic Queries",
+          "content": "Use Boolean operators, filter by journal impact factor, and cross-check results with Google Scholar for completeness."
+        }
+      ]
+    },
+    "plugin_arxiv_search": {
+      "name": "ArXiv Search Plugin",
+      "display_name": "ArXivSearch",
+      "introduction": "Learn to query the arXiv repository via ChatGPT, filtering preprints by subject area, date, and author.",
+      "paragraphs": [
+        {
+          "heading": "ArXiv Plugin Capabilities",
+          "content": "The ArXiv Search plugin enables you to fetch the latest preprints, abstracts, and PDF links from Cornell's arXiv repository across disciplines."
+        },
+        {
+          "heading": "Setup and API Key Management",
+          "content": "Install \"ArXivSearch\" from the plugin catalog, then input your arXiv API token. Configure default categories."
+        },
+        {
+          "heading": "Constructing Search Queries",
+          "content": "Use \"@ArXivSearch: neutrino mixing since 2020\" or \"@ArXivSearch: author 'Gödel'\". You can paginate results or limit by date range."
+        },
+        {
+          "heading": "Retrieving Full-Text and Metadata",
+          "content": "Append \"?pdf=true\" to get direct PDF URLs or \"?metadata=all\" for submission history, citation counts, and categorization."
+        },
+        {
+          "heading": "Optimizing for Relevance",
+          "content": "Combine keyword filters with date and subject codes. Use \"sortBy=submittedDate\" or \"sortBy=relevance\" to control ordering."
+        }
+      ]
+    }
+  }
+}

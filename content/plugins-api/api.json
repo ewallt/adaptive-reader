@@ -1,0 +1,168 @@
+{
+  "title": "Essential Data APIs: A Multi-Part Guide",
+  "description": "A series of teaching articles that walk you through obtaining, configuring, and mastering key public-data APIs for demographic, economic, environmental, and geospatial information.",
+  "categories": {
+    "api_census_bureau": {
+      "name": "U.S. Census Bureau API",
+      "display_name": "Census API",
+      "introduction": "Learn how to access demographic, housing, and economic data from the U.S. Census Bureau through its RESTful API.",
+      "paragraphs": [
+        {
+          "heading": "Overview of the Census Bureau API",
+          "content": "The U.S. Census Bureau API provides programmatic access to population, housing, and economic datasets collected by the Census. You can query by geography, year, and variables to retrieve granular data for analysis."
+        },
+        {
+          "heading": "Obtaining an API Key",
+          "content": "Register for a free API key at the Census Developer Portal. Include the key as a `key` query parameter in all requests to authenticate."
+        },
+        {
+          "heading": "Basic Query Structure",
+          "content": "Construct requests like `https://api.census.gov/data/2020/acs/acs5?get=B01003_001E&for=state:*&key=YOUR_KEY`. `B01003_001E` is the total population variable and `state:*` retrieves all states."
+        },
+        {
+          "heading": "Advanced Filtering and Geography",
+          "content": "Use FIPS codes to target counties, tracts, or blocks. Combine multiple variables and use the `in` parameter to filter nested geographies (e.g., cities within a county)."
+        },
+        {
+          "heading": "Best Practices and Tips",
+          "content": "Cache frequent queries to reduce latency. Respect rate limits and handle missing or null data gracefully in your application."
+        }
+      ]
+    },
+    "api_bls": {
+      "name": "Bureau of Labor Statistics API",
+      "display_name": "BLS API",
+      "introduction": "Master the BLS API to retrieve labor market statistics, employment, wages, and inflation data programmatically.",
+      "paragraphs": [
+        {
+          "heading": "Capabilities of the BLS API",
+          "content": "The BLS API offers endpoints for Consumer Price Index, Current Employment Statistics, and more. Data can be fetched by series ID, date range, and seasonal adjustment."
+        },
+        {
+          "heading": "Getting Your API Token",
+          "content": "Sign up at the BLS Developer Registration page to receive a token. Include this token as `registrationKey` in your requests."
+        },
+        {
+          "heading": "Fetching Series Data",
+          "content": "Use POST requests to `https://api.bls.gov/publicAPI/v2/timeseries/data/` with a JSON body listing `seriesid`, `startyear`, and `endyear`. The API returns arrays of observations with year, period, and value."
+        },
+        {
+          "heading": "Handling Large Requests",
+          "content": "Batch up to 25 series IDs per request. For more, implement batching logic and pace calls to respect rate limits."
+        },
+        {
+          "heading": "Best Practices and Tips",
+          "content": "Validate series IDs before requesting. Cache metadata locally and use the `calculations` parameter to receive percent changes."
+        }
+      ]
+    },
+    "api_world_bank": {
+      "name": "World Bank Data API",
+      "display_name": "World Bank API",
+      "introduction": "Explore global development indicators—GDP, health, education—from the World Bank's API for international comparisons.",
+      "paragraphs": [
+        {
+          "heading": "Introduction to the World Bank API",
+          "content": "The World Bank API provides access to hundreds of indicators for 200+ countries. Data is organized by country code, indicator ID, and year, with pagination support."
+        },
+        {
+          "heading": "No-Auth Access",
+          "content": "No API key required. Construct requests like `http://api.worldbank.org/v2/country/USA/indicator/NY.GDP.MKTP.CD?format=json` to retrieve GDP data."
+        },
+        {
+          "heading": "Basic Usage Patterns",
+          "content": "Append `?per_page=500&date=2000:2020` to fetch 20 years of data. The first element in the JSON response is metadata; the second is the data array."
+        },
+        {
+          "heading": "Filtering and Parameters",
+          "content": "Use `source` to select data collections, `region` to filter by region code, and `incomeLevel` to group countries by income classification."
+        },
+        {
+          "heading": "Best Practices and Tips",
+          "content": "Implement paging using metadata fields. Cache static lists like country codes to minimize redundant calls."
+        }
+      ]
+    },
+    "api_fred": {
+      "name": "Federal Reserve FRED API",
+      "display_name": "FRED API",
+      "introduction": "Access U.S. economic time series—interest rates, monetary aggregates, employment—from the Federal Reserve's FRED API.",
+      "paragraphs": [
+        {
+          "heading": "Overview of the FRED API",
+          "content": "The FRED API offers endpoints for series observations, releases, and categories. Data can be retrieved as JSON or XML."
+        },
+        {
+          "heading": "API Key Registration",
+          "content": "Register on the FRED website to obtain an API key. Include it as `api_key` in all request parameters."
+        },
+        {
+          "heading": "Fetching Series Observations",
+          "content": "Call `https://api.stlouisfed.org/fred/series/observations?series_id=UNRATE&api_key=YOUR_KEY&file_type=json` to get unemployment rate data. Specify `observation_start` and `observation_end` for date ranges."
+        },
+        {
+          "heading": "Advanced Query Features",
+          "content": "Use `frequency` to convert series (e.g., monthly to quarterly), `units` to change units, and `trim_start` to exclude zeros."
+        },
+        {
+          "heading": "Best Practices and Tips",
+          "content": "Monitor rate limits (120 calls/min). Store frequently used series definitions locally and handle missing observations with interpolation."
+        }
+      ]
+    },
+    "api_openweathermap": {
+      "name": "OpenWeatherMap API",
+      "display_name": "OpenWeatherMap",
+      "introduction": "Master real-time and historical weather data retrieval using the OpenWeatherMap API for location-based features.",
+      "paragraphs": [
+        {
+          "heading": "Capabilities of OpenWeatherMap",
+          "content": "Provides current weather, hourly and daily forecasts, and historical weather data via `/weather`, `/forecast`, and `/onecall` endpoints."
+        },
+        {
+          "heading": "Getting an API Key",
+          "content": "Sign up on OpenWeatherMap, generate a key, and include it as `appid` in request URLs."
+        },
+        {
+          "heading": "Basic Current Weather Requests",
+          "content": "Use `https://api.openweathermap.org/data/2.5/weather?q=London&appid=YOUR_KEY&units=metric` to fetch current conditions."
+        },
+        {
+          "heading": "Advanced Data and Alerts",
+          "content": "Use the One Call API to combine multiple data types in one call. Subscribe to weather alerts for specified coordinates."
+        },
+        {
+          "heading": "Best Practices and Tips",
+          "content": "Cache data for short intervals. Respect free-tier limits and implement fallback logic for API errors."
+        }
+      ]
+    },
+    "api_google_maps": {
+      "name": "Google Maps API",
+      "display_name": "Maps API",
+      "introduction": "Learn to integrate geocoding, place search, and routing features using the Google Maps Platform APIs.",
+      "paragraphs": [
+        {
+          "heading": "Key Services in Maps API",
+          "content": "Includes Geocoding, Places, Directions, and JavaScript Maps APIs. Each returns JSON or XML for location-based functionality."
+        },
+        {
+          "heading": "Enabling APIs and Billing",
+          "content": "Create a Google Cloud project, enable the desired Maps APIs, set up billing, and generate an API key restricted by domain or IP."
+        },
+        {
+          "heading": "Basic Geocoding Requests",
+          "content": "Call `https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway&key=YOUR_KEY` to get latitude/longitude data."
+        },
+        {
+          "heading": "Routing and Place Searches",
+          "content": "Use the Directions API for route calculations and the Places API (`location`, `radius`, `type`) for nearby searches."
+        },
+        {
+          "heading": "Best Practices and Tips",
+          "content": "Restrict API keys, cache responses, and monitor usage in the Google Cloud Console to manage costs."
+        }
+      ]
+    }
+  }
+}
